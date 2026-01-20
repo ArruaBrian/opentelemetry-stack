@@ -48,7 +48,7 @@ services:
       - '--web.enable-lifecycle'
     volumes:
       - prometheus-storage:/prometheus
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus-config.yml:/etc/prometheus/prometheus.yml
     networks:
       - otel-network
     restart: unless-stopped
