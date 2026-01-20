@@ -12,6 +12,13 @@ receivers:
         - job_name: 'otel-collector'
           static_configs:
             - targets: ['localhost:8888']
+        
+        # Scrape integrations-ms metrics
+        - job_name: 'integrations-ms'
+          static_configs:
+            - targets: ['host.docker.internal:3000']  # Adjust port if needed
+          metrics_path: /metrics
+          scrape_interval: 15s
 
 processors:
   batch:
@@ -25,6 +32,9 @@ processors:
     attributes:
       - key: environment
         value: production
+        action: upsert
+      - key: service.name
+        value: integrations-ms
         action: upsert
 
 exporters:
@@ -40,6 +50,7 @@ exporters:
     namespace: "otel"
     const_labels:
       environment: "production"
+      service: "integrations-ms"
   
   # Exportar logs a consola (para debugging)
   logging:
